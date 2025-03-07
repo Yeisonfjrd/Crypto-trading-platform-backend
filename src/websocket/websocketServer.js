@@ -10,7 +10,6 @@ const setupWebSocket = (server) => {
     const wss = new WebSocketServer({ server });
     wsServerInstance = wss;
 
-    // Función de broadcast global
     const broadcastToAll = (data) => {
         wss.clients.forEach(client => {
             if (client.isAlive && client.readyState === WebSocket.OPEN) {
@@ -19,7 +18,6 @@ const setupWebSocket = (server) => {
         });
     };
 
-    // Configurar el intervalo global de actualización
     const setupBroadcastInterval = async () => {
         if (broadcastInterval) {
             clearInterval(broadcastInterval);
@@ -70,14 +68,11 @@ const setupWebSocket = (server) => {
             }
         };
 
-        // Ejecutar inmediatamente la primera vez
         await fetchAndBroadcast();
-        
-        // Configurar el intervalo
+
         broadcastInterval = setInterval(fetchAndBroadcast, 60000);
     };
 
-    // Iniciar el intervalo de broadcast
     setupBroadcastInterval();
 
     wss.on('connection', (ws) => {
@@ -99,7 +94,6 @@ const setupWebSocket = (server) => {
             }
         });
 
-        // Enviar datos iniciales al cliente que se conecta
         fetchCryptoData().then(cryptoData => {
             if (cryptoData && ws.isAlive) {
                 ws.send(JSON.stringify({
@@ -121,7 +115,6 @@ const setupWebSocket = (server) => {
         });
     });
 
-    // Verificar conexiones muertas cada 30 segundos
     const heartbeat = setInterval(() => {
         wss.clients.forEach(ws => {
             if (!ws.isAlive) {
