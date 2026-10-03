@@ -24,3 +24,6 @@ dist/
 # System files
 .DS_Store
 Thumbs.dbnode_modules/
+
+# Redis snapshots
+*.rdb
