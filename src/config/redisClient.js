@@ -1,6 +1,5 @@
 import Redis from 'ioredis';
 
-console.log('REDIS_URL:', process.env.REDIS_URL || 'No definido');
 
 const redisClient = new Redis(process.env.REDIS_URL, {
   retryStrategy: (times) => Math.min(times * 50, 2000),
